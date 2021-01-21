@@ -1,0 +1,221 @@
+---
+title: "Opérations attributaires et géométriques"
+subtitle: "Cartographier avec R <br> Master Quantifier en Sciences Sociales"
+author: "J. Migozzi"
+institute: "Ecole Normale Supérieure"
+date: "21/01/2021"
+output:
+  xaringan::moon_reader:
+    #yolo: true
+    # css: [default, metropolis, metropolis-fonts]
+    # css: ["default", "default-fonts", "hygge"]
+    css: example.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%current%/%total%"           # 12/42
+editor_options: 
+  chunk_output_type: console
+---
+class: inverse, center, middle
+
+# Retours
+
+```{r setup, include=FALSE}
+  library(knitr)
+
+# knitr::opts_chunk$set(fig.path="c://Users/jmigozzi/Dropbox/ENS/Cours/FormationR/MappingwithR/img/")
+# setwd("C:/Users/jmigozzi/Dropbox/ENS/Cours/FormationR/MappingwithR/")
+# options(htmltools.dir.version = FALSE)
+# knitr::opts_chunk$set(fig.retina=2)
+#knitr::opts_chunk$set(cache = F)
+# 
+
+# library(Cairo)
+# library(cairoDevice)
+# load("my_work_space.RData")
+library(tidyverse)
+library(kableExtra)
+library(sf)
+library(spData)
+library(tmap)
+library(cartography)
+library(viridis)
+library(ggthemes)
+library(hrbrthemes)
+library(tmap)
+idf_sf <- st_read(dsn = "data/idf_data/parispc_com.shp", 
+                  stringsAsFactors = F)
+
+```
+
+
+---
+class: inverse, center, middle
+
+# Manipuler des données spatiales
+
+### Opérations attributaires
+
+
+---
+### Sélection et agrégation
+
+- On utilise les fonctions de base pour manipuler les unités spatiales : rename, filter, mutate, select...
+
+- Agrégation : géométrie agrégée selon modalités des variables 
+
+
+.left-code[
+```{r plot-label1, eval=FALSE, warning=F, message = F}
+dpt <- idf_sf %>% 
+  group_by(NOM_DEPT) %>%
+  summarise(POP = sum(POPULATION*1000)) 
+
+plot(dpt)
+```
+]
+
+.right-plot[
+```{r plot-label1-out, ref.label="plot-label1", echo=FALSE, message = F, warning=F, out.width="100%", out.height="40%", fig.align="center"}
+```
+]
+
+---
+### Agrégation
+
+```{r}
+head(dpt)
+```
+
+---
+### Jointure
+
+De nouveau, les verbes du tidyverse : left_join, inner_join etc.
+
+```{r}
+
+head(dpt)
+```
+
+---
+### Exercice
+
+Proposez une visualisation rapide du pourcentage de cadres en IDF en 2007.
+
+---
+class: inverse, center, middle
+
+# Manipuler des données spatiales
+
+### Opérations géométriques
+
+---
+### R est un petit SIG
+
+On peut réaliser la quasi totalité des opérations attendues d'un SIG : 
+
+- calcul de surfaces : st_area()
+- 
+
+
+---
+### Les jointures spatiales
+
+- On en distingue deux grands types de jointures : 
+  - Les jointures par attribut : On utilise un champ commun (un identifiant) aux deux tables.
+  - Les jointures par localisation / jointures spatiales : les entités sont associées selon leurs relations géométriques
+
+- La jointure se base donc sur la position des unités spatiales.
+
+- Les unités de la couche cible récupère les données attributaires de la couche de départ selon leur intersection.
+
+
+```{r}
+u <- st_join(idf_sf, movies_paris)
+```
+
+
+---
+## Les coordonnées géographiques ou *Coordinate Reference System*
+
+- La terre est ronde. On la modélise comme une sphère, soit un objet en 3 dimensions, pour créer un système géodésique qui sert de cadre de réference pour exprimer une localisation selon des coordonnées.
+
+--
+
+- On utilise deux valeurs pour localiser un point à partir d'une sphère : 
+  - la **longitude** positionne d'est en ouest (x); 
+  - la **latitude** positionne du nord au Sud (y). 
+  - Longitude et latitude sont les coordonnées géographiques d'un point.
+  - Attention : les distances ne sont pas mesurées en mètre !
+  
+---
+## Les coordonnées géographiques ou *Coordinate Reference System*
+
+- Une carte est un objet en deux dimensions. Il faut donc passer d'une sphère à une surface plane. 
+  - On utilise une **projection**, c'est à dire une transition mathématique (voir cette [vidéo](https://www.youtube.com/watch?v=OUQe2a0FOnc&list=PL6-_uJ2qn-8knSkvNkxs5BJbJy5PgtchL&index=2)).
+  - On projete donc la sphère, ou une portion, sur une surface plane, ce qui introduit une déformation des angles, des longueurs, des formes et des surfaces.
+
+---
+## Les coordonnées géographiques ou *Coordinate Reference System*
+
+- Le choix d'un SRC ou *CRS* répond donc à une question de recherche, à un enjeu de visualisation : quel territoire est étudié/cartographié ? 
+
+- Il faut donc choisir / vérifier le CRS lors de la collecte de données spatiales
+
+--
+
+- Chaque système est référencé par un identifiant au sein d'un [large catalogue](https://spatialreference.org/ref/epsg/):
+
+  - France : projection Lambert - RGF93 : EPSG:2154
+  - Monde : WGS84 (utilisé par système gps) : EPSG:4326
+  - Google Mercator : EPSG:3857
+
+--
+
+- Le choix d'un CRS adapté est essentiel pour calculer des distances, donc des densités ou des surfaces.
+
+
+---
+### Les jointures
+
+---
+### Les découpages
+
+
+
+---
+### Les calculs de zones-tampons
+
+
+
+
+  
+---
+class: center, middle
+
+# Merci !
+
+Slides crées avec le package [**xaringan**](https://github.com/yihui/xaringan).
+
+
+---
+### Codes
+
+
+.left-code[
+```{r plot-labelZ, eval=FALSE, warning=F, message = F}
+plot(cars)
+
+```
+]
+
+.right-plot[
+```{r plot-labelZ-out, ref.label="plot-label1", echo=FALSE, message = F, warning=F}
+```
+]
+
+
+

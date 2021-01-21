@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Opérations attributaires et géométriques</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="J. Migozzi" />
+    <link rel="stylesheet" href="example.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Opérations attributaires et géométriques
+## Cartographier avec R <br> Master Quantifier en Sciences Sociales
+### J. Migozzi
+### Ecole Normale Supérieure
+### 21/01/2021
+
+---
+
+class: inverse, center, middle
+
+# Retours
+
+
+
+
+---
+class: inverse, center, middle
+
+# Manipuler des données spatiales
+
+### Opérations attributaires
+
+
+---
+### Sélection et agrégation
+
+- On utilise les fonctions de base pour manipuler les unités spatiales : rename, filter, mutate, select...
+
+- Agrégation : géométrie agrégée selon modalités des variables 
+
+
+.left-code[
+
+```r
+dpt &lt;- idf_sf %&gt;% 
+  group_by(NOM_DEPT) %&gt;%
+  summarise(POP = sum(POPULATION*1000)) %&gt;%
+  plot()
+```
+]
+
+.right-plot[
+&lt;img src="01_Session2_files/figure-html/plot-label1-out-1.png" width="100%" height="40%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+### Agrégation
+
+
+```r
+head(dpt)
+```
+
+```
+## $xlog
+## [1] FALSE
+## 
+## $ylog
+## [1] FALSE
+## 
+## $adj
+## [1] 0.5
+## 
+## $ann
+## [1] TRUE
+## 
+## $ask
+## [1] FALSE
+## 
+## $bg
+## [1] "white"
+```
+
+
+
+---
+### Regrouper des géométries
+
+
+---
+class: inverse, center, middle
+
+# Manipuler des données spatiales
+
+### Opérations géométriques
+
+
+
+
+
+---
+## Les coordonnées géographiques ou *Coordinate Reference System*
+
+- La terre est ronde. On la modélise comme une sphère, soit un objet en 3 dimensions, pour créer un système géodésique qui sert de cadre de réference pour exprimer une localisation selon des coordonnées.
+
+--
+
+- On utilise deux valeurs pour localiser un point à partir d'une sphère : 
+  - la **longitude** positionne d'est en ouest (x); 
+  - la **latitude** positionne du nord au Sud (y). 
+  - Longitude et latitude sont les coordonnées géographiques d'un point.
+  - Attention : les distances ne sont pas mesurées en mètre !
+  
+---
+## Les coordonnées géographiques ou *Coordinate Reference System*
+
+- Une carte est un objet en deux dimensions. Il faut donc passer d'une sphère à une surface plane. 
+  - On utilise une **projection**, c'est à dire une transition mathématique (voir cette [vidéo](https://www.youtube.com/watch?v=OUQe2a0FOnc&amp;list=PL6-_uJ2qn-8knSkvNkxs5BJbJy5PgtchL&amp;index=2)).
+  - On projete donc la sphère, ou une portion, sur une surface plane, ce qui introduit une déformation des angles, des longueurs, des formes et des surfaces.
+
+---
+## Les coordonnées géographiques ou *Coordinate Reference System*
+
+- Le choix d'un SRC ou *CRS* répond donc à une question de recherche, à un enjeu de visualisation : quel territoire est étudié/cartographié ? 
+
+- Il faut donc choisir / vérifier le CRS lors de la collecte de données spatiales
+
+--
+
+- Chaque système est référencé par un identifiant au sein d'un [large catalogue](https://spatialreference.org/ref/epsg/):
+
+  - France : projection Lambert - RGF93 : EPSG:2154
+  - Monde : WGS84 (utilisé par système gps) : EPSG:4326
+  - Google Mercator : EPSG:3857
+
+--
+
+- Le choix d'un CRS adapté est essentiel pour calculer des distances, donc des densités ou des surfaces.
+
+
+
+
+
+  
+---
+class: center, middle
+
+# Merci !
+
+Slides crées avec le package [**xaringan**](https://github.com/yihui/xaringan).
+
+
+---
+### Codes
+
+
+.left-code[
+
+```r
+plot(cars)
+```
+]
+
+.right-plot[
+![](01_Session2_files/figure-html/plot-labelZ-out-1.png)&lt;!-- --&gt;
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%/%total%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
