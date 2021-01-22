@@ -120,7 +120,7 @@ class: inverse, center, middle
 - Exemple : "[les données carroyées de l'INSEE](https://www.insee.fr/fr/information/5008701?sommaire=5008710)" ou la base de données SIRENE
 
 ```{r, eval = T, echo = F, fig.align="center", out.width= "50%"}
-include_graphics("img/GEE.PNG")
+include_graphics("img/MarseillePoverty.PNG")
 
 
 ```
@@ -603,7 +603,7 @@ mapview(r)
 
 3. Proposez une visualisation interactive des lieux de tournage : 
   - de Emily in Paris ; 
-  - de la série Engregages.
+  - de la série Engrenages.
   
 4. Créer un objet SF qui stocke le nombre de tournages par arrondissement. Que remarquez vous ? 
   
