@@ -22,6 +22,12 @@ a, a > code {
 }
 
 
+.middle {
+  padding: 70px 0;
+  text-align: center;
+}
+
+
 .remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
   font-size: 95%;
 }
