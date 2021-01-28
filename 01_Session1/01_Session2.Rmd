@@ -632,6 +632,36 @@ tm_credits("J. Migozzi, 2021. Source: Insee",
 ]
 
 ---
+## Le fond de carte
+
+Travailler dans R permet d'appeler des fichiers raster pour obtenir des fonds de carte auprès de divers fournisseurs : OpenStreetMap, CartoDB, Esri etc. 
+
+Il peut s'agir de cartes, de photographies aériennes, dont on choisit la résolution (la finesse). 
+
+---
+## Le fond de carte
+
+Le package *cartography* propose une [fonction](https://www.rdocumentation.org/packages/cartography/versions/2.4.2/topics/getTiles) pour cela. 
+
+```{r, echo = T, warning=F}
+paris <- idf_sf %>% filter(NOM_DEPT == "PARIS")
+#Télécharger un fond de carte avec la fonction getTiles
+parisOSM <- getTiles(x = paris,
+                   type = "CartoDB.Positron", 
+                   crop = TRUE)
+```
+
+Le package tmap propose la fonction *tm_basemap*, d'une logique similaire.
+
+---
+## Le fond de carte
+
+```{r, echo = T, warning=F, fig.align="center"}
+tilesLayer(parisOSM)
+```
+
+
+---
 # Exercice
 
 - Avec le package de votre choix, réalisez deux cartes à l'échelle de la commune en IDF : 
