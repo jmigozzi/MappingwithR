@@ -11,7 +11,7 @@ Ce cours est créé par Julien Migozzi, AGPR à l'Ecole Normale Supérieure, pou
 Slides : 
 
 - [Session 1](https://jmigozzi.github.io/MappingwithR/01_Session1/01_Session1.html#1)
-
+- [Session 2](https://jmigozzi.github.io/MappingwithR/01_Session2/01_Session2.html#1)
 
 ## Remerciements
 
